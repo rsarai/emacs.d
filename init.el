@@ -2,6 +2,8 @@
 (setq package-enable-at-startup nil)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
+(add-to-list 'package-archives
+             '("melpa-stable" . "https://stable.melpa.org/packages/"))
 (package-initialize)
 
 (unless (package-installed-p 'use-package)
@@ -25,6 +27,7 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
+(require 'org-journal)
 
 (use-package org-roam
       :load-path "~/.emacs.d/elisp/"
@@ -32,7 +35,7 @@
       (after-init . org-roam-mode)
       :straight (:host github :repo "jethrokuan/org-roam" :branch "develop")
       :custom
-      (org-roam-directory "/home/sarai/org-roam")
+      (org-roam-directory "/home/sarai/org-roam/")
       :bind (:map org-roam-mode-map
               (("C-c p" . org-roam)
                ("C-c j" . org-roam-find-file)
@@ -48,7 +51,7 @@
   (deft-recursive t)
   (deft-use-filter-string-for-filename t)
   (deft-default-extension "org")
-  (deft-directory "/path/to/org-roam-files/"))
+  (deft-directory "/home/sarai/org-roam/"))
 
 (use-package org-journal
   :bind
@@ -78,10 +81,18 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ansi-color-names-vector
-   ["#2e3436" "#a40000" "#4e9a06" "#c4a000" "#204a87" "#5c3566" "#729fcf" "#eeeeec"])
  '(custom-enabled-themes (quote (tsdh-dark)))
- '(org-roam-directory "/home/sarai/org-roam"))
+ '(deft-default-extension "org" t)
+ '(deft-directory "/home/sarai/org-roam/" t)
+ '(deft-recursive t t)
+ '(deft-use-filter-string-for-filename t t)
+ '(mathpix-app-id "app-id" t)
+ '(mathpix-app-key "app-key" t)
+ '(org-journal-date-format "%A, %d %B %Y" t)
+ '(org-journal-date-prefix "#+TITLE: " t)
+ '(org-journal-dir "/home/sarai/org-roam/" t)
+ '(org-journal-file-format "%Y-%m-%d.org" t)
+ '(org-roam-directory "/home/sarai/org-roam/"))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
