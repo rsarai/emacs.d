@@ -2,13 +2,43 @@
 (setq package-enable-at-startup nil)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
-(add-to-list 'package-archives
-             '("melpa-stable" . "https://stable.melpa.org/packages/"))
+(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/"))
+(add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
 (package-initialize)
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
+
+(require 'org)
+
+(use-package org
+  :mode ("\\.org\\'" . org-mode)
+  :bind
+  (("C-c l" . org-store-link)
+   ("C-c a" . org-agenda)
+   ("C-c b" . org-iswitchb)
+   ("C-c c" . org-capture))
+  :bind
+  (:map org-mode-map
+        ("M-n" . outline-next-visible-heading)
+        ("M-p" . outline-previous-visible-heading))
+  :custom
+  (org-src-window-setup 'current-window)
+  (org-return-follows-link t)
+  (org-use-speed-commands t)
+  (org-catch-invisible-edits 'show)
+  (org-preview-latex-image-directory "/tmp/ltximg/")
+  :custom-face
+  (variable-pitch ((t (:family "Libre Baskerville"))))
+  (org-document-title ((t (:weight bold :height 1.5))))
+  (org-done ((t (:strike-through t :weight bold))))
+  (org-headline-done ((t (:strike-through t))))
+  (org-level-1 ((t (:height 1.3 :weight bold))))
+  (org-level-2 ((t (:height 1.2 :weight bold))))
+  (org-level-3 ((t (:height 1.1 :weight bold))))
+  (org-image-actual-width (/ (display-pixel-width) 2)))
+
 
 (eval-when-compile
   (require 'use-package))
@@ -27,21 +57,33 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
+(use-package markdown-mode
+  :ensure t
+  :commands (markdown-mode gfm-mode)
+  :mode (("README\\.md\\'" . gfm-mode)
+         ("\\.md\\'" . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode)
+         ("\\.org\\'" . markdown-mode))
+  :init (setq markdown-command "multimarkdown"))
+
 (require 'org-journal)
 
 (use-package org-roam
       :load-path "~/.emacs.d/elisp/"
       :hook 
       (after-init . org-roam-mode)
-      :straight (:host github :repo "jethrokuan/org-roam" :branch "develop")
       :custom
       (org-roam-directory "/home/sarai/org-roam/")
+      :custom-face
+      (org-roam-link ((t (:inherit org-link :foreground "#C991E1"))))
+      :straight (:host github :repo "jethrokuan/org-roam" :branch "develop")
       :bind (:map org-roam-mode-map
-              (("C-c p" . org-roam)
-               ("C-c j" . org-roam-find-file)
-               ("C-c n g" . org-roam-show-graph))
-              :map org-mode-map
-              (("C-c n i" . org-roam-insert))))
+              (("C-c n l" . org-roam)
+               ("C-c n f" . org-roam-find-file)
+               ("C-c n g" . org-roam-show-graph)
+               ("C-c n i" . org-roam-insert))))
+      
+(setq org-roam-filename-noconfirm nil)
 
 (use-package deft
   :after org
@@ -60,7 +102,8 @@
   (org-journal-date-prefix "#+TITLE: ")
   (org-journal-file-format "%Y-%m-%d.org")
   (org-journal-dir "/home/sarai/org-roam/")
-  (org-journal-date-format "%A, %d %B %Y"))
+  (org-journal-date-format "%B %d, %Y")
+  :init (setq org-log-done 'time))
 
 (use-package org-download
   :after org
@@ -83,16 +126,11 @@
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes (quote (tsdh-dark)))
  '(deft-default-extension "org" t)
- '(deft-directory "/home/sarai/org-roam/" t)
- '(deft-recursive t t)
- '(deft-use-filter-string-for-filename t t)
+ '(deft-directory "/home/sarai/org-roam/")
+ '(deft-recursive t)
+ '(deft-use-filter-string-for-filename t)
  '(mathpix-app-id "app-id" t)
- '(mathpix-app-key "app-key" t)
- '(org-journal-date-format "%A, %d %B %Y" t)
- '(org-journal-date-prefix "#+TITLE: " t)
- '(org-journal-dir "/home/sarai/org-roam/" t)
- '(org-journal-file-format "%Y-%m-%d.org" t)
- '(org-roam-directory "/home/sarai/org-roam/"))
+ '(mathpix-app-key "app-key" t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
