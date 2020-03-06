@@ -66,14 +66,12 @@
          ("\\.org\\'" . markdown-mode))
   :init (setq markdown-command "multimarkdown"))
 
-(require 'org-journal)
-
 (use-package org-roam
       :load-path "~/.emacs.d/elisp/"
       :hook 
       (after-init . org-roam-mode)
       :custom
-      (org-roam-directory "/home/sarai/org-roam/")
+      (org-roam-directory "/home/sarai/github-projects/second-brain/brain")
       :custom-face
       (org-roam-link ((t (:inherit org-link :foreground "#C991E1"))))
       :straight (:host github :repo "jethrokuan/org-roam" :branch "develop")
@@ -93,7 +91,7 @@
   (deft-recursive t)
   (deft-use-filter-string-for-filename t)
   (deft-default-extension "org")
-  (deft-directory "/home/sarai/org-roam/"))
+  (deft-directory "/home/sarai/github-projects/second-brain/brain"))
 
 (use-package org-journal
   :bind
@@ -101,7 +99,7 @@
   :custom
   (org-journal-date-prefix "#+TITLE: ")
   (org-journal-file-format "%Y-%m-%d.org")
-  (org-journal-dir "/home/sarai/org-roam/")
+  (org-journal-dir "/home/sarai/github-projects/second-brain/brain")
   (org-journal-date-format "%B %d, %Y")
   :init (setq org-log-done 'time))
 
@@ -126,7 +124,7 @@
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes (quote (tsdh-dark)))
  '(deft-default-extension "org" t)
- '(deft-directory "/home/sarai/org-roam/")
+ '(deft-directory "/home/sarai/github-projects/second-brain/brain")
  '(deft-recursive t)
  '(deft-use-filter-string-for-filename t)
  '(mathpix-app-id "app-id" t)
